@@ -1,7 +1,8 @@
-import axios from 'axios'
+// src/services/Api.js
+import axios from 'axios';
 
 export default () => {
   return axios.create({
-    baseURL: `http://localhost:3000/`
-  })
-}
+    baseURL: 'http://localhost:3000/api' // notice the /api here!
+  });
+};
