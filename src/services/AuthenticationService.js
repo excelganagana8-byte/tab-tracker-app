@@ -1,8 +1,11 @@
 // src/services/AuthenticationService.js
-import Api from './Api';
+import Api from './Api'
 
 export default {
   register(credentials) {
-    return Api().post('/register', credentials);
-  }
-};
+    return Api().post('/register', credentials)
+  },
+  login(credentials) {
+    return Api().post('/login', credentials)
+  },
+}

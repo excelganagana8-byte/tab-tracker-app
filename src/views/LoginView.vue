@@ -1,45 +1,15 @@
-<script setup>
-import { ref } from 'vue'
-import AuthenticationService from '@/services/AuthenticationService.js'
-import Header from '@/components/Header.vue'
-import BrowseButton from '@/components/BrowseButton.vue'
-
-const email = ref('')
-const password = ref('')
-const errors = ref([])
-
-const registerUser = async () => {
-  errors.value = []
-  try {
-    const response = await AuthenticationService.register({
-      email: email.value,
-      password: password.value,
-    })
-    alert(response.data.message || 'Registration successful!')
-  } catch (err) {
-    const data = err.response?.data
-    if (Array.isArray(data?.errors)) {
-      errors.value = data.errors.map((e) => e.message)
-    } else if (data?.message) {
-      errors.value = [data.message]
-    } else {
-      errors.value = ['Something went wrong. Please try again.']
-    }
-  }
-}
-</script>
-
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 flex flex-col transition-colors"
   >
-    <!-- Navigation Section - SIMPLIFIED -->
+    <!-- Navigation Section -->
     <div class="relative mt-10 px-4 md:px-10">
-      <!-- Header - Centered for all screens -->
+      <!-- Header with increased left margin on md screens -->
       <div class="flex justify-center md:ml-[15%]">
         <Header />
       </div>
 
+      <!-- Browse button: visible on md and up -->
       <div class="absolute right-4 top-0 hidden md:block">
         <BrowseButton />
       </div>
@@ -87,20 +57,20 @@ const registerUser = async () => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               ></path>
             </svg>
           </div>
           <h2
             class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2"
           >
-            Create Account
+            Welcome Back
           </h2>
-          <p class="text-gray-500 text-sm">Join our community and get started today</p>
+          <p class="text-gray-500 text-sm">Sign in to your account</p>
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="registerUser" class="space-y-6">
+        <form @submit.prevent="login" class="space-y-6">
           <div class="group">
             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
@@ -111,7 +81,6 @@ const registerUser = async () => {
                 type="email"
                 id="email"
                 placeholder="you@example.com"
-                autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -142,7 +111,6 @@ const registerUser = async () => {
                 type="password"
                 id="password"
                 placeholder="••••••••"
-                autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -190,12 +158,12 @@ const registerUser = async () => {
             </div>
           </div>
 
-          <!-- Register Button -->
+          <!-- Login Button -->
           <button
             type="submit"
             class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3.5 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 group/btn"
           >
-            <span>Create Account</span>
+            <span>Sign In</span>
             <svg
               class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
               fill="none"
@@ -206,20 +174,20 @@ const registerUser = async () => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
               ></path>
             </svg>
           </button>
         </form>
 
-        <!-- Sign In Link -->
+        <!-- Sign Up Link -->
         <p class="mt-8 text-center text-gray-500 text-sm">
-          Already have an account?
+          Don't have an account yet?
           <router-link
-            to="/login"
+            to="/register"
             class="text-cyan-600 font-semibold hover:text-cyan-700 transition-colors flex items-center justify-center space-x-1 mt-2 group/link"
           >
-            <span>Sign in to your account</span>
+            <span>Create your account</span>
             <svg
               class="w-4 h-4 transform group-hover/link:translate-x-0.5 transition-transform"
               fill="none"
@@ -230,7 +198,7 @@ const registerUser = async () => {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M9 5l7 7-7 7"
+                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0z"
               ></path>
             </svg>
           </router-link>
@@ -239,3 +207,35 @@ const registerUser = async () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import Header from '@/components/Header.vue'
+import { ref } from 'vue'
+import AuthenticationService from '@/services/AuthenticationService'
+
+const email = ref('')
+const password = ref('')
+const errors = ref([])
+
+const login = async () => {
+  errors.value = []
+
+  try {
+    const response = await AuthenticationService.login({
+      email: email.value,
+      password: password.value,
+    })
+
+    alert(response.data.message || 'Login Successful')
+  } catch (err) {
+    const data = err.response?.data
+    if (Array.isArray(data?.errors)) {
+      errors.value = data.errors.map((e) => e.message)
+    } else if (data?.message) {
+      errors.value = [data.message]
+    } else {
+      errors.value = ['Something went wrong. Please try again.']
+    }
+  }
+}
+</script>
