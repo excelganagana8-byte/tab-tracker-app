@@ -1,5 +1,4 @@
 <template>
-  <!-- Header -->
   <header
     class="py-6 flex justify-center md:justify-start bg-white/80 backdrop-blur-lg border-b border-cyan-100/50 shadow-sm/60 px-6 md:px-12"
   >
