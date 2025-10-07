@@ -4,15 +4,33 @@
   >
     <MainHeader />
 
-    <!-- Page Title -->
-    <div class="p-8 flex justify-center">
-      <div class="text-center">
-        <h2
-          class="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2"
+    <div class="p-8">
+      <div class="max-w-2xl mx-auto flex justify-between items-center">
+        <div class="text-center">
+          <h2
+            class="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2"
+          >
+            All Songs
+          </h2>
+          <p class="text-gray-500 text-sm">{{ songs.length }} songs in your collection</p>
+        </div>
+
+        <button
+          @click="go"
+          class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
         >
-          All Songs
-        </h2>
-        <p class="text-gray-500 text-sm">{{ songs.length }} songs in your collection</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Add Song</span>
+        </button>
       </div>
     </div>
 
@@ -54,6 +72,7 @@
               </div>
             </div>
             <button
+              @click="view(song._id)"
               class="relative bg-white border border-cyan-200 text-cyan-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-gradient-to-r hover:from-cyan-600 hover:to-blue-600 hover:text-white hover:shadow-lg hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2 group/btn"
             >
               <span>View</span>
@@ -114,6 +133,7 @@
 import MainHeader from '@/components/MainHeader.vue'
 import SongService from '@/services/SongService'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const songs = ref([])
 
@@ -125,4 +145,28 @@ onMounted(async () => {
     console.error('Error fetching songs:', error)
   }
 })
+
+const props = defineProps({
+  toCreate: {
+    type: String,
+    default: '/song/create',
+  },
+  toView: {
+    type: String,
+    default: '/songs/:songsId', // dynamic placeholder
+  },
+})
+
+const router = useRouter()
+
+function go() {
+  router.push(props.toCreate)
+}
+
+// Accept the song ID as a parameter
+function view(songId) {
+  // Replace the :songsId placeholder with the actual ID
+  const path = props.toView.replace(':songsId', songId)
+  router.push(path)
+}
 </script>
