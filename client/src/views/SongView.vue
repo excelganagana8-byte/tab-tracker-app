@@ -4,7 +4,6 @@
 
     <div class="p-8">
       <div class="max-w-7xl mx-auto">
-        <!-- Increased max-width for side-by-side layout -->
         <!-- Main Content Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Left Column - Song Info & Content -->
@@ -39,23 +38,44 @@
                   </div>
                 </div>
 
-                <button
-                  @click="$router.back()"
-                  class="bg-white border border-cyan-200 text-cyan-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-gradient-to-r hover:from-cyan-600 hover:to-blue-600 hover:text-white hover:shadow-lg hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                    />
-                  </svg>
-                  <span>Back</span>
-                </button>
+                <!-- Action Buttons Group -->
+                <div class="flex items-center space-x-3">
+                  <!-- Back Button -->
+                  <button
+                    @click="$router.back()"
+                    class="bg-white border border-gray-200 text-gray-700 px-5 py-2.5 rounded-xl font-semibold hover:bg-gray-50 hover:border-gray-300 hover:text-gray-900 hover:shadow-lg hover:shadow-gray-500/10 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                      />
+                    </svg>
+                    <span>Back</span>
+                  </button>
+
+                  <!-- Edit Button -->
+                  <button
+                    @click="edit(song._id)"
+                    class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 hover:shadow-lg hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    <span>Edit</span>
+                  </button>
+                </div>
               </div>
             </div>
 
+            <!-- Rest of your content remains exactly the same -->
             <!-- Content Tabs -->
             <div class="mb-6">
               <div
@@ -159,7 +179,6 @@
           <!-- Right Column - YouTube Video -->
           <div class="lg:col-span-1">
             <div class="sticky top-8">
-              <!-- Sticky positioning for better UX -->
               <!-- Video Card -->
               <div
                 class="bg-white/90 backdrop-blur-sm border border-white/50 rounded-2xl shadow-lg overflow-hidden"
@@ -268,7 +287,7 @@ import MainHeader from '@/components/MainHeader.vue'
 import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import YouTubeEmbed from '@/components/YouTubeEmbed.vue'
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const song = ref({
   title: '',
@@ -280,6 +299,7 @@ const song = ref({
 })
 const activeTab = ref('tab')
 const route = useRoute()
+const router = useRouter()
 
 // Copy to clipboard function
 const copyToClipboard = async (text) => {
@@ -290,6 +310,11 @@ const copyToClipboard = async (text) => {
   } catch (err) {
     console.error('Failed to copy: ', err)
   }
+}
+
+const edit = () => {
+  const songId = route.params.songsId
+  router.push(`/songs/${songId}/edit`)
 }
 
 onMounted(async () => {
