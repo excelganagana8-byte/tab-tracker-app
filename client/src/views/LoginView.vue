@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 flex flex-col transition-colors"
+    class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col transition-colors"
   >
     <!-- Navigation Section -->
     <div class="relative mt-10 px-4 md:px-10">
@@ -18,7 +18,7 @@
       <div class="absolute right-4 top-0 md:hidden">
         <router-link
           to="/songs"
-          class="text-cyan-600 font-semibold hover:text-cyan-700 transition-colors flex items-center space-x-1 text-sm group"
+          class="text-purple-300 font-semibold hover:text-purple-200 transition-colors flex items-center space-x-1 text-sm group"
         >
           <span>Browse</span>
           <svg
@@ -41,38 +41,41 @@
     <!-- Centered Card -->
     <div class="flex-1 flex items-center justify-center px-4 py-8">
       <div
-        class="relative bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl w-full max-w-md p-8 border border-white/50 transition-all duration-300 hover:shadow-3xl"
+        class="relative bg-white/5 backdrop-blur-lg rounded-2xl w-full max-w-md p-8 border border-white/10 transition-all duration-300 hover:border-purple-500/30"
       >
-        <!-- Decorative background element -->
+        <!-- Decorative background elements -->
         <div
-          class="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 rounded-full blur-xl"
+          class="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl"
+        ></div>
+        <div
+          class="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-xl"
         ></div>
 
         <div class="text-center mb-8">
           <div
-            class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4"
+            class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 shadow-purple-500/25"
           >
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
               ></path>
             </svg>
           </div>
           <h2
-            class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2"
+            class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
           >
             Welcome Back
           </h2>
-          <p class="text-gray-500 text-sm">Sign in to your account</p>
+          <p class="text-gray-400 text-sm">Sign in to your account</p>
         </div>
 
         <!-- Form -->
         <form @submit.prevent="login" class="space-y-6">
           <div class="group">
-            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="email" class="block text-sm font-semibold text-gray-300 mb-2">
               Email Address
             </label>
             <div class="relative">
@@ -81,11 +84,11 @@
                 type="email"
                 id="email"
                 placeholder="you@example.com"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 placeholder-gray-500 group-hover:border-purple-400/50"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg
-                  class="w-5 h-5 text-gray-400 group-hover:text-cyan-500 transition-colors"
+                  class="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -102,7 +105,7 @@
           </div>
 
           <div class="group">
-            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="password" class="block text-sm font-semibold text-gray-300 mb-2">
               Password
             </label>
             <div class="relative">
@@ -111,11 +114,11 @@
                 type="password"
                 id="password"
                 placeholder="••••••••"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 placeholder-gray-500 group-hover:border-purple-400/50"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg
-                  class="w-5 h-5 text-gray-400 group-hover:text-cyan-500 transition-colors"
+                  class="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -134,12 +137,12 @@
           <!-- Error Messages -->
           <div
             v-if="errors.length"
-            class="bg-red-50 border border-red-200 rounded-xl p-4 space-y-2 transform transition-all duration-300"
+            class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-2 transform transition-all duration-300 backdrop-blur-sm"
           >
             <div
               v-for="(err, i) in errors"
               :key="i"
-              class="flex items-center space-x-2 text-red-700 text-sm"
+              class="flex items-center space-x-2 text-red-300 text-sm"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -161,7 +164,7 @@
           <!-- Login Button -->
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3.5 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 group/btn"
+            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3.5 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 group/btn"
           >
             <span>Sign In</span>
             <svg
@@ -181,11 +184,11 @@
         </form>
 
         <!-- Sign Up Link -->
-        <p class="mt-8 text-center text-gray-500 text-sm">
+        <p class="mt-8 text-center text-gray-400 text-sm">
           Don't have an account yet?
           <router-link
             to="/register"
-            class="text-cyan-600 font-semibold hover:text-cyan-700 transition-colors flex items-center justify-center space-x-1 mt-2 group/link"
+            class="text-purple-300 font-semibold hover:text-purple-200 transition-colors flex items-center justify-center space-x-1 mt-2 group/link"
           >
             <span>Create your account</span>
             <svg
@@ -210,6 +213,7 @@
 
 <script setup>
 import Header from '@/components/Header.vue'
+import BrowseButton from '@/components/BrowseButton.vue'
 import { ref } from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
 

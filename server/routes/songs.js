@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/", index);
 router.post("/", createSong);
-router.get("/:songsId", show);
-router.patch("/:songsId", updateSong);
+router.get("/:id", show);
+router.patch("/:id", updateSong);
 
 export default router;

@@ -15,7 +15,7 @@
             v-model="title"
             :error="errors.title"
           />
-          <p v-if="errors.title" class="text-red-500 text-sm mt-1 ml-1">{{ errors.title }}</p>
+          <p v-if="errors.title" class="text-red-400 text-sm mt-1 ml-1">{{ errors.title }}</p>
         </div>
 
         <!-- Artist -->
@@ -27,7 +27,7 @@
             v-model="artist"
             :error="errors.artist"
           />
-          <p v-if="errors.artist" class="text-red-500 text-sm mt-1 ml-1">{{ errors.artist }}</p>
+          <p v-if="errors.artist" class="text-red-400 text-sm mt-1 ml-1">{{ errors.artist }}</p>
         </div>
 
         <!-- Album -->
@@ -38,39 +38,20 @@
           v-model="album"
         />
 
-        <!-- Genre & YouTube ID -->
         <div class="grid grid-cols-2 gap-4">
-          <div class="group">
-            <label for="genre" class="block text-sm font-semibold text-gray-700 mb-2">
-              Genre
-            </label>
-            <select
-              v-model="genre"
-              id="genre"
-              :class="[
-                'border w-full py-3 px-4 rounded-xl bg-white/80 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 group-hover:border-cyan-300',
-                errors.genre
-                  ? 'border-red-500 focus:border-red-500'
-                  : 'border-gray-200 focus:border-cyan-500',
-              ]"
-            >
-              <option value="" disabled selected>Select genre</option>
-              <option value="pop">Pop</option>
-              <option value="rock">Rock</option>
-              <option value="hiphop">Hip Hop</option>
-              <option value="electronic">Electronic</option>
-              <option value="jazz">Jazz</option>
-              <option value="classical">Classical</option>
-              <option value="country">Country</option>
-              <option value="r&b">R&B</option>
-            </select>
-            <p v-if="errors.genre" class="text-red-500 text-sm mt-1">{{ errors.genre }}</p>
-          </div>
+          <FormSelect
+            id="genre"
+            label="Genre"
+            placeholder="Select genre"
+            v-model="genre"
+            :options="genreOptions"
+            :error="errors.genre"
+          />
 
           <FormInput
             id="youtubeId"
             label="YouTube ID"
-            placeholder="YouTube video ID"
+            placeholder="Enter YouTube video ID"
             v-model="youtubeId"
           />
         </div>
@@ -84,45 +65,37 @@
         />
 
         <!-- Lyrics -->
-        <div class="group">
-          <label for="lyrics" class="block text-sm font-semibold text-gray-700 mb-2">
-            Lyrics (Optional)
-          </label>
-          <textarea
-            v-model="lyrics"
-            id="lyrics"
-            placeholder="Enter song lyrics"
-            rows="4"
-            class="border border-gray-200 w-full py-3 px-4 rounded-xl bg-white/80 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300 resize-none"
-          ></textarea>
-        </div>
+        <FormInput
+          id="lyrics"
+          label="Lyrics (Optional)"
+          placeholder="Enter song lyrics"
+          v-model="lyrics"
+          :isTextarea="true"
+          :rows="4"
+        />
 
         <!-- Tab -->
-        <div class="group">
-          <label for="tab" class="block text-sm font-semibold text-gray-700 mb-2">
-            Guitar Tab (Optional)
-          </label>
-          <textarea
-            v-model="tab"
-            id="tab"
-            placeholder="Enter guitar tab"
-            rows="4"
-            class="border border-gray-200 w-full py-3 px-4 rounded-xl bg-white/80 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300 resize-none"
-          ></textarea>
-        </div>
+        <FormInput
+          id="tab"
+          label="Guitar Tab (Optional)"
+          placeholder="Enter guitar tab"
+          v-model="tab"
+          :isTextarea="true"
+          :rows="6"
+        />
 
         <!-- Action Buttons -->
         <div class="flex space-x-4 pt-4">
           <button
             @click="go"
             type="button"
-            class="flex-1 py-3 px-4 bg-white border border-cyan-200 text-cyan-600 rounded-xl font-semibold hover:bg-cyan-50 hover:shadow-md transition-all duration-300"
+            class="flex-1 py-3 px-4 bg-white/10 border border-purple-400/30 text-purple-300 rounded-xl font-semibold hover:bg-white/20 hover:border-purple-300/50 hover:text-purple-200 hover:shadow-md transition-all duration-300"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="flex-1 py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center"
+            class="flex-1 py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -148,6 +121,7 @@ import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import FormContainer from '@/components/FormContainer.vue'
 import FormInput from '@/components/FormInput.vue'
+import FormSelect from '@/components/FormSelect.vue'
 import { useRouter } from 'vue-router'
 
 const title = ref('')
@@ -158,6 +132,17 @@ const albumImage = ref('')
 const youtubeId = ref('')
 const lyrics = ref('')
 const tab = ref('')
+const genreOptions = [
+  { value: 'pop', label: 'Pop' },
+  { value: 'rock', label: 'Rock' },
+  { value: 'hiphop', label: 'Hip Hop' },
+  { value: 'electronic', label: 'Electronic' },
+  { value: 'jazz', label: 'Jazz' },
+  { value: 'classical', label: 'Classical' },
+  { value: 'country', label: 'Country' },
+  { value: 'r&b', label: 'R&B' },
+]
+
 const errors = ref({})
 
 const handleSubmit = async () => {

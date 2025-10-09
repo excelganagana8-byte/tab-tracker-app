@@ -4,8 +4,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
-import authRoutes from "./routes/auth.js"; // import your router
+import authRoutes from "./routes/auth.js";
 import songRoutes from "./routes/songs.js";
+import bookmarkRoutes from "./routes/bookmark.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ connectDB();
 // Use routes
 app.use("/api", authRoutes);
 app.use("/api/songs", songRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

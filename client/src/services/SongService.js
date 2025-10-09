@@ -1,17 +1,20 @@
 import Api from './Api'
 
 export default {
-  index() {
-    return Api().get('/songs')
+  index(params = {}) {
+    return Api().get('/songs', {
+      params: {
+        search: params.search || '', // Ensure search parameter is properly passed
+      },
+    })
   },
   show(songId) {
-    return Api().get(`songs/${songId}`)
+    return Api().get(`/songs/${songId}`) // Added leading slash for consistency
   },
   post(song) {
     return Api().post('/songs', song)
   },
-  // FIXED: Accept songId as first parameter, song data as second
   patch(songId, song) {
-    return Api().patch(`songs/${songId}`, song)
+    return Api().patch(`/songs/${songId}`, song)
   },
 }

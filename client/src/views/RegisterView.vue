@@ -31,9 +31,9 @@ const registerUser = async () => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-100 flex flex-col transition-colors"
+    class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col"
   >
-    <!-- Navigation Section - SIMPLIFIED -->
+    <!-- Navigation Section -->
     <div class="relative mt-10 px-4 md:px-10">
       <!-- Header - Centered for all screens -->
       <div class="flex justify-center md:ml-[15%]">
@@ -48,7 +48,7 @@ const registerUser = async () => {
       <div class="absolute right-4 top-0 md:hidden">
         <router-link
           to="/songs"
-          class="text-cyan-600 font-semibold hover:text-cyan-700 transition-colors flex items-center space-x-1 text-sm group"
+          class="text-purple-300 font-semibold hover:text-purple-200 transition-colors flex items-center space-x-1 text-sm group"
         >
           <span>Browse</span>
           <svg
@@ -71,16 +71,19 @@ const registerUser = async () => {
     <!-- Centered Card -->
     <div class="flex-1 flex items-center justify-center px-4 py-8">
       <div
-        class="relative bg-white/90 backdrop-blur-sm shadow-2xl rounded-2xl w-full max-w-md p-8 border border-white/50 transition-all duration-300 hover:shadow-3xl"
+        class="relative bg-white/5 backdrop-blur-lg rounded-2xl w-full max-w-md p-8 border border-white/10 transition-all duration-300 hover:border-purple-500/30"
       >
-        <!-- Decorative background element -->
+        <!-- Decorative background elements -->
         <div
-          class="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 rounded-full blur-xl"
+          class="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl"
+        ></div>
+        <div
+          class="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-xl"
         ></div>
 
         <div class="text-center mb-8">
           <div
-            class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4"
+            class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4 shadow-purple-500/25"
           >
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -92,17 +95,17 @@ const registerUser = async () => {
             </svg>
           </div>
           <h2
-            class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2"
+            class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
           >
             Create Account
           </h2>
-          <p class="text-gray-500 text-sm">Join our community and get started today</p>
+          <p class="text-gray-400 text-sm">Join our music community and start tracking your tabs</p>
         </div>
 
         <!-- Form -->
         <form @submit.prevent="registerUser" class="space-y-6">
           <div class="group">
-            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="email" class="block text-sm font-semibold text-gray-300 mb-2">
               Email Address
             </label>
             <div class="relative">
@@ -112,11 +115,11 @@ const registerUser = async () => {
                 id="email"
                 placeholder="you@example.com"
                 autocomplete="off"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 placeholder-gray-500 group-hover:border-purple-400/50"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg
-                  class="w-5 h-5 text-gray-400 group-hover:text-cyan-500 transition-colors"
+                  class="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -133,7 +136,7 @@ const registerUser = async () => {
           </div>
 
           <div class="group">
-            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="password" class="block text-sm font-semibold text-gray-300 mb-2">
               Password
             </label>
             <div class="relative">
@@ -143,11 +146,11 @@ const registerUser = async () => {
                 id="password"
                 placeholder="••••••••"
                 autocomplete="off"
-                class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 text-gray-900 focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all duration-300 placeholder-gray-400 group-hover:border-cyan-300"
+                class="w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 placeholder-gray-500 group-hover:border-purple-400/50"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                 <svg
-                  class="w-5 h-5 text-gray-400 group-hover:text-cyan-500 transition-colors"
+                  class="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -166,12 +169,12 @@ const registerUser = async () => {
           <!-- Error Messages -->
           <div
             v-if="errors.length"
-            class="bg-red-50 border border-red-200 rounded-xl p-4 space-y-2 transform transition-all duration-300"
+            class="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-2 transform transition-all duration-300 backdrop-blur-sm"
           >
             <div
               v-for="(err, i) in errors"
               :key="i"
-              class="flex items-center space-x-2 text-red-700 text-sm"
+              class="flex items-center space-x-2 text-red-300 text-sm"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -193,7 +196,7 @@ const registerUser = async () => {
           <!-- Register Button -->
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3.5 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-cyan-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 group/btn"
+            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3.5 px-4 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 group/btn"
           >
             <span>Create Account</span>
             <svg
@@ -213,11 +216,11 @@ const registerUser = async () => {
         </form>
 
         <!-- Sign In Link -->
-        <p class="mt-8 text-center text-gray-500 text-sm">
+        <p class="mt-8 text-center text-gray-400 text-sm">
           Already have an account?
           <router-link
             to="/login"
-            class="text-cyan-600 font-semibold hover:text-cyan-700 transition-colors flex items-center justify-center space-x-1 mt-2 group/link"
+            class="text-purple-300 font-semibold hover:text-purple-200 transition-colors flex items-center justify-center space-x-1 mt-2 group/link"
           >
             <span>Sign in to your account</span>
             <svg

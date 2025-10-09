@@ -1,40 +1,58 @@
 import Song from "../models/Song.js";
 
-//get all songs
+// Get all songs with search
 export const index = async (req, res) => {
   try {
-    const songs = await Song.find();
+    const { search } = req.query;
+    let songs;
+
+    if (search) {
+      // Search by song title OR artist (case-insensitive)
+      songs = await Song.find({
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { artist: { $regex: search, $options: "i" } },
+        ],
+      });
+    } else {
+      // Get all songs
+      songs = await Song.find();
+    }
+
     res.status(200).json(songs);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//get song with an id of :id
+// Get song by ID (frontend uses :id)
 export const show = async (req, res) => {
   try {
-    const songs = await Song.findById(req.params.songsId);
-    res.status(200).json(songs);
+    const song = await Song.findById(req.params.id); // <-- changed to 'id'
+    if (!song) {
+      return res.status(404).json({ message: "Song not found" });
+    }
+    res.status(200).json(song);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//create a new song
+// Create a new song
 export const createSong = async (req, res) => {
   try {
     const song = await Song.create(req.body);
-    res.status(201).json({ message: "Songs Created Successfully", song });
+    res.status(201).json({ message: "Song Created Successfully", song });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Update a song
+// Update a song by ID (frontend uses :id)
 export const updateSong = async (req, res) => {
   try {
     const song = await Song.findByIdAndUpdate(
-      req.params.songsId, // matches router
+      req.params.id, // <-- changed to 'id'
       { $set: req.body },
       { new: true }
     );

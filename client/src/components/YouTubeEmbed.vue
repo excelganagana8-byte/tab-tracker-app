@@ -42,6 +42,7 @@ const props = defineProps({
 const extractYouTubeId = (input) => {
   if (!input) return null
   const regex =
+    // eslint-disable-next-line no-useless-escape
     /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)?([^"&?\/\s]{11})/
   const match = input.match(regex)
   return match ? match[1] : null
