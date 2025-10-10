@@ -1,3 +1,93 @@
+<script setup>
+import SongService from '@/services/SongService'
+import BookmarksServices from '@/services/BookmarksServices'
+import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
+import YouTubeEmbed from '@/components/YouTubeEmbed.vue'
+import { useAuthStore } from '@/stores/auth'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const song = ref({
+  title: '',
+  artist: '',
+  genre: '',
+  tab: '',
+  lyrics: '',
+  youtubeId: '',
+})
+const activeTab = ref('tab')
+const route = useRoute()
+const router = useRouter()
+const isBookmarked = ref(false)
+const auth = useAuthStore()
+// Copy to clipboard function
+const copyToClipboard = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text)
+    console.log('Copied to clipboard!')
+  } catch (err) {
+    console.error('Failed to copy: ', err)
+  }
+}
+
+const edit = (songId) => {
+  // Use named route for edit
+  router.push({ name: 'editSong', params: { id: songId } })
+}
+async function setASBookmark() {
+  try {
+    const userId = auth.user?.id //'68e2d5c7615e3e58ef5a8bfe'
+    const songId = song.value._id
+
+    await BookmarksServices.create({ user: userId, song: songId })
+    isBookmarked.value = true
+  } catch (error) {
+    console.error('Error adding bookmark:', error)
+  }
+}
+
+async function removeBookmark() {
+  try {
+    const userId = auth.user?.id //'68e2d5c7615e3e58ef5a8bfe'
+    const songId = song.value._id
+
+    await BookmarksServices.delete(songId, userId)
+    isBookmarked.value = false
+  } catch (error) {
+    console.error('Error removing bookmark:', error)
+  }
+}
+
+onMounted(async () => {
+  try {
+    const songId = route.params.id
+    const userId = auth.user?.id //'68e2d5c7615e3e58ef5a8bfe' /👈 Replace later with real logged-in user
+
+    if (!songId) {
+      console.error('❌ No song ID found in route parameters')
+      return
+    }
+
+    console.log('🎵 Fetching song with ID:', songId)
+
+    // 1️⃣ Fetch song info
+    const songResponse = await SongService.show(songId)
+    song.value = songResponse.data
+    console.log('✅ Fetched song:', songResponse.data)
+
+    // 2️⃣ Fetch user bookmarks
+    const { data: bookmarks } = await BookmarksServices.index(userId)
+    console.log('📚 User bookmarks:', bookmarks)
+
+    // 3️⃣ Check if this song is bookmarked
+    isBookmarked.value = bookmarks.some((b) => b.song._id === songId)
+    console.log('🔖 isBookmarked:', isBookmarked.value)
+  } catch (error) {
+    console.error('🔥 Error fetching song or bookmarks:', error)
+  }
+})
+</script>
+
 <template>
   <BackgroundWrapper>
     <div class="p-4 md:p-8">
@@ -355,90 +445,3 @@
     </div>
   </BackgroundWrapper>
 </template>
-
-<script setup>
-import SongService from '@/services/SongService'
-import BookmarksServices from '@/services/BookmarksServices'
-import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
-import YouTubeEmbed from '@/components/YouTubeEmbed.vue'
-import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
-const song = ref({
-  title: '',
-  artist: '',
-  genre: '',
-  tab: '',
-  lyrics: '',
-  youtubeId: '',
-})
-const activeTab = ref('tab')
-const route = useRoute()
-const router = useRouter()
-const isBookmarked = ref(false)
-
-// Copy to clipboard function
-const copyToClipboard = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text)
-    console.log('Copied to clipboard!')
-  } catch (err) {
-    console.error('Failed to copy: ', err)
-  }
-}
-
-const edit = (songId) => {
-  // Use named route for edit
-  router.push({ name: 'editSong', params: { id: songId } })
-}
-async function setASBookmark() {
-  try {
-    const userId = '68e2d5c7615e3e58ef5a8bfe'
-    const songId = song.value._id
-    await BookmarksServices.create({ user: userId, song: songId })
-    isBookmarked.value = true
-  } catch (error) {
-    console.error('Error adding bookmark:', error)
-  }
-}
-
-async function removeBookmark() {
-  try {
-    const userId = '68e2d5c7615e3e58ef5a8bfe'
-    const songId = song.value._id
-    await BookmarksServices.delete(songId, userId)
-    isBookmarked.value = false
-  } catch (error) {
-    console.error('Error removing bookmark:', error)
-  }
-}
-
-onMounted(async () => {
-  try {
-    const songId = route.params.id
-    const userId = '68e2d5c7615e3e58ef5a8bfe' // 👈 Replace later with real logged-in user
-
-    if (!songId) {
-      console.error('❌ No song ID found in route parameters')
-      return
-    }
-
-    console.log('🎵 Fetching song with ID:', songId)
-
-    // 1️⃣ Fetch song info
-    const songResponse = await SongService.show(songId)
-    song.value = songResponse.data
-    console.log('✅ Fetched song:', songResponse.data)
-
-    // 2️⃣ Fetch user bookmarks
-    const { data: bookmarks } = await BookmarksServices.index({ user: userId })
-    console.log('📚 User bookmarks:', bookmarks)
-
-    // 3️⃣ Check if this song is bookmarked
-    isBookmarked.value = bookmarks.some((b) => b.song._id === songId)
-    console.log('🔖 isBookmarked:', isBookmarked.value)
-  } catch (error) {
-    console.error('🔥 Error fetching song or bookmarks:', error)
-  }
-})
-</script>

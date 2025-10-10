@@ -1,3 +1,84 @@
+<script setup>
+import { ref } from 'vue'
+import SongService from '@/services/SongService'
+import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import FormContainer from '@/components/FormContainer.vue'
+import FormInput from '@/components/FormInput.vue'
+import FormSelect from '@/components/FormSelect.vue'
+import { useRouter } from 'vue-router'
+
+const title = ref('')
+const artist = ref('')
+const album = ref('')
+const genre = ref('')
+const albumImage = ref('')
+const youtubeId = ref('')
+const lyrics = ref('')
+const tab = ref('')
+const genreOptions = [
+  { value: 'pop', label: 'Pop' },
+  { value: 'rock', label: 'Rock' },
+  { value: 'hiphop', label: 'Hip Hop' },
+  { value: 'electronic', label: 'Electronic' },
+  { value: 'jazz', label: 'Jazz' },
+  { value: 'classical', label: 'Classical' },
+  { value: 'country', label: 'Country' },
+  { value: 'r&b', label: 'R&B' },
+]
+
+const errors = ref({})
+
+const handleSubmit = async () => {
+  // Reset errors
+  errors.value = {}
+
+  // Validate fields
+  if (!title.value) errors.value.title = 'Title is required'
+  if (!artist.value) errors.value.artist = 'An Artist is required'
+  if (!genre.value) errors.value.genre = 'Please select a genre'
+
+  // Check if there are any errors
+  if (Object.keys(errors.value).length > 0) return
+
+  try {
+    const newSong = {
+      title: title.value,
+      artist: artist.value,
+      album: album.value,
+      genre: genre.value,
+      albumImage: albumImage.value,
+      youtubeId: youtubeId.value,
+      lyrics: lyrics.value,
+      tab: tab.value,
+    }
+
+    const response = await SongService.post(newSong)
+
+    alert('Song created successfully!')
+    console.log('Form submitted', response.data)
+
+    // Redirect to songs list
+    router.push('/songs')
+  } catch (err) {
+    console.log('Error creating song', err)
+    alert('Failed to create song. Please try again.')
+  }
+}
+
+const props = defineProps({
+  to: {
+    type: String,
+    default: '/songs',
+  },
+})
+
+const router = useRouter()
+function go() {
+  router.push(props.to)
+}
+</script>
+
 <template>
   <BackgroundWrapper>
     <PageHeader title="Add New Song" subtitle="Share your music with the world" />
@@ -110,84 +191,3 @@
     </FormContainer>
   </BackgroundWrapper>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import SongService from '@/services/SongService'
-import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import FormContainer from '@/components/FormContainer.vue'
-import FormInput from '@/components/FormInput.vue'
-import FormSelect from '@/components/FormSelect.vue'
-import { useRouter } from 'vue-router'
-
-const title = ref('')
-const artist = ref('')
-const album = ref('')
-const genre = ref('')
-const albumImage = ref('')
-const youtubeId = ref('')
-const lyrics = ref('')
-const tab = ref('')
-const genreOptions = [
-  { value: 'pop', label: 'Pop' },
-  { value: 'rock', label: 'Rock' },
-  { value: 'hiphop', label: 'Hip Hop' },
-  { value: 'electronic', label: 'Electronic' },
-  { value: 'jazz', label: 'Jazz' },
-  { value: 'classical', label: 'Classical' },
-  { value: 'country', label: 'Country' },
-  { value: 'r&b', label: 'R&B' },
-]
-
-const errors = ref({})
-
-const handleSubmit = async () => {
-  // Reset errors
-  errors.value = {}
-
-  // Validate fields
-  if (!title.value) errors.value.title = 'Title is required'
-  if (!artist.value) errors.value.artist = 'An Artist is required'
-  if (!genre.value) errors.value.genre = 'Please select a genre'
-
-  // Check if there are any errors
-  if (Object.keys(errors.value).length > 0) return
-
-  try {
-    const newSong = {
-      title: title.value,
-      artist: artist.value,
-      album: album.value,
-      genre: genre.value,
-      albumImage: albumImage.value,
-      youtubeId: youtubeId.value,
-      lyrics: lyrics.value,
-      tab: tab.value,
-    }
-
-    const response = await SongService.post(newSong)
-
-    alert('Song created successfully!')
-    console.log('Form submitted', response.data)
-
-    // Redirect to songs list
-    router.push('/songs')
-  } catch (err) {
-    console.log('Error creating song', err)
-    alert('Failed to create song. Please try again.')
-  }
-}
-
-const props = defineProps({
-  to: {
-    type: String,
-    default: '/songs',
-  },
-})
-
-const router = useRouter()
-function go() {
-  router.push(props.to)
-}
-</script>

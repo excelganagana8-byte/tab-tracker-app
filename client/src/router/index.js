@@ -6,6 +6,7 @@ import SongsView from '@/views/songs/SongsView.vue'
 import CreateSongView from '@/views/songs/CreateSongView.vue'
 import SongView from '@/views/songs/SongView.vue'
 import EditSongView from '@/views/songs/EditSongView.vue'
+import SongsBookmark from '@/views/songs/SongsBookmark.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: '/song/create', name: 'createSong', component: CreateSongView },
     { path: '/songs/:id', name: 'viewSong', component: SongView }, // Fixed: removed :song
     { path: '/songs/:id/edit', name: 'editSong', component: EditSongView }, // Fixed: use :id consistently
+    { path: '/bookmarks', name: 'bookmark', component: SongsBookmark },
   ],
 })
 

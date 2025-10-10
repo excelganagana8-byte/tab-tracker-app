@@ -1,3 +1,111 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import SongService from '@/services/SongService'
+import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import FormContainer from '@/components/FormContainer.vue'
+import FormInput from '@/components/FormInput.vue'
+import FormSelect from '@/components/FormSelect.vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const title = ref('')
+const artist = ref('')
+const album = ref('')
+const genre = ref('')
+const albumImage = ref('')
+const youtubeId = ref('')
+const lyrics = ref('')
+const tab = ref('')
+const genreOptions = [
+  { value: 'pop', label: 'Pop' },
+  { value: 'rock', label: 'Rock' },
+  { value: 'hiphop', label: 'Hip Hop' },
+  { value: 'electronic', label: 'Electronic' },
+  { value: 'jazz', label: 'Jazz' },
+  { value: 'classical', label: 'Classical' },
+  { value: 'country', label: 'Country' },
+  { value: 'r&b', label: 'R&B' },
+]
+
+const errors = ref({})
+
+const router = useRouter()
+const route = useRoute()
+
+// Fetch song data when component mounts
+onMounted(async () => {
+  try {
+    const songId = route.params.id
+    const response = await SongService.show(songId)
+    const songData = response.data
+
+    // Populate form fields with existing data
+    title.value = songData.title || ''
+    artist.value = songData.artist || ''
+    album.value = songData.album || ''
+    genre.value = songData.genre || ''
+    albumImage.value = songData.albumImage || ''
+    youtubeId.value = songData.youtubeId || ''
+    lyrics.value = songData.lyrics || ''
+    tab.value = songData.tab || ''
+
+    console.log('Loaded song data:', songData)
+  } catch (error) {
+    console.log('Error fetching song data:', error)
+    alert('Failed to load song data. Please try again.')
+  }
+})
+
+const handleSubmit = async () => {
+  // Reset errors
+  errors.value = {}
+
+  // Validate fields
+  if (!title.value) errors.value.title = 'Title is required'
+  if (!artist.value) errors.value.artist = 'An Artist is required'
+  if (!genre.value) errors.value.genre = 'Please select a genre'
+
+  // Check if there are any errors
+  if (Object.keys(errors.value).length > 0) return
+
+  try {
+    const song = {
+      title: title.value,
+      artist: artist.value,
+      album: album.value,
+      genre: genre.value,
+      albumImage: albumImage.value,
+      youtubeId: youtubeId.value,
+      lyrics: lyrics.value,
+      tab: tab.value,
+    }
+
+    const songId = route.params.id
+    const response = await SongService.patch(songId, song)
+
+    alert('Song updated successfully!')
+    console.log('Song updated', response.data)
+
+    // Redirect to the song detail page
+    router.push(`/songs/${songId}`)
+  } catch (err) {
+    console.log('Error updating song', err)
+    alert('Failed to update song. Please try again.')
+  }
+}
+
+const props = defineProps({
+  to: {
+    type: String,
+    default: '/songs',
+  },
+})
+
+function go() {
+  router.push(props.to)
+}
+</script>
+
 <template>
   <BackgroundWrapper>
     <PageHeader title="Edit Song" subtitle="Make new changes to your song" />
@@ -109,111 +217,3 @@
     </FormContainer>
   </BackgroundWrapper>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-import SongService from '@/services/SongService'
-import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import FormContainer from '@/components/FormContainer.vue'
-import FormInput from '@/components/FormInput.vue'
-import FormSelect from '@/components/FormSelect.vue'
-import { useRouter, useRoute } from 'vue-router'
-
-const title = ref('')
-const artist = ref('')
-const album = ref('')
-const genre = ref('')
-const albumImage = ref('')
-const youtubeId = ref('')
-const lyrics = ref('')
-const tab = ref('')
-const genreOptions = [
-  { value: 'pop', label: 'Pop' },
-  { value: 'rock', label: 'Rock' },
-  { value: 'hiphop', label: 'Hip Hop' },
-  { value: 'electronic', label: 'Electronic' },
-  { value: 'jazz', label: 'Jazz' },
-  { value: 'classical', label: 'Classical' },
-  { value: 'country', label: 'Country' },
-  { value: 'r&b', label: 'R&B' },
-]
-
-const errors = ref({})
-
-const router = useRouter()
-const route = useRoute()
-
-// Fetch song data when component mounts
-onMounted(async () => {
-  try {
-    const songId = route.params.id
-    const response = await SongService.show(songId)
-    const songData = response.data
-
-    // Populate form fields with existing data
-    title.value = songData.title || ''
-    artist.value = songData.artist || ''
-    album.value = songData.album || ''
-    genre.value = songData.genre || ''
-    albumImage.value = songData.albumImage || ''
-    youtubeId.value = songData.youtubeId || ''
-    lyrics.value = songData.lyrics || ''
-    tab.value = songData.tab || ''
-
-    console.log('Loaded song data:', songData)
-  } catch (error) {
-    console.log('Error fetching song data:', error)
-    alert('Failed to load song data. Please try again.')
-  }
-})
-
-const handleSubmit = async () => {
-  // Reset errors
-  errors.value = {}
-
-  // Validate fields
-  if (!title.value) errors.value.title = 'Title is required'
-  if (!artist.value) errors.value.artist = 'An Artist is required'
-  if (!genre.value) errors.value.genre = 'Please select a genre'
-
-  // Check if there are any errors
-  if (Object.keys(errors.value).length > 0) return
-
-  try {
-    const song = {
-      title: title.value,
-      artist: artist.value,
-      album: album.value,
-      genre: genre.value,
-      albumImage: albumImage.value,
-      youtubeId: youtubeId.value,
-      lyrics: lyrics.value,
-      tab: tab.value,
-    }
-
-    const songId = route.params.id
-    const response = await SongService.patch(songId, song)
-
-    alert('Song updated successfully!')
-    console.log('Song updated', response.data)
-
-    // Redirect to the song detail page
-    router.push(`/songs/${songId}`)
-  } catch (err) {
-    console.log('Error updating song', err)
-    alert('Failed to update song. Please try again.')
-  }
-}
-
-const props = defineProps({
-  to: {
-    type: String,
-    default: '/songs',
-  },
-})
-
-function go() {
-  router.push(props.to)
-}
-</script>

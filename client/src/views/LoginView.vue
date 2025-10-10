@@ -1,3 +1,50 @@
+<script setup>
+import Header from '@/components/Header.vue'
+import BrowseButton from '@/components/BrowseButton.vue'
+import { ref } from 'vue'
+import AuthenticationService from '@/services/AuthenticationService'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const email = ref('')
+const password = ref('')
+const errors = ref([])
+const router = useRouter()
+const auth = useAuthStore()
+
+const login = async () => {
+  errors.value = []
+
+  try {
+    const response = await AuthenticationService.login({
+      email: email.value,
+      password: password.value,
+    })
+
+    // Get token and user directly from backend response
+    const { token, user } = response.data
+
+    // Store user & token in Pinia + localStorage
+    auth.login(user, token)
+
+    // Optional success alert
+    alert(response.data.message || `Welcome back, ${user.name}!`)
+
+    // Redirect to dashboard or home
+    router.push('/')
+  } catch (err) {
+    const data = err.response?.data
+    if (Array.isArray(data?.errors)) {
+      errors.value = data.errors.map((e) => e.message)
+    } else if (data?.message) {
+      errors.value = [data.message]
+    } else {
+      errors.value = ['Something went wrong. Please try again.']
+    }
+  }
+}
+</script>
+
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col transition-colors"
@@ -210,50 +257,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import Header from '@/components/Header.vue'
-import BrowseButton from '@/components/BrowseButton.vue'
-import { ref } from 'vue'
-import AuthenticationService from '@/services/AuthenticationService'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-
-const email = ref('')
-const password = ref('')
-const errors = ref([])
-const router = useRouter()
-const auth = useAuthStore()
-
-const login = async () => {
-  errors.value = []
-
-  try {
-    const response = await AuthenticationService.login({
-      email: email.value,
-      password: password.value,
-    })
-
-    // Get token and user directly from backend response
-    const { token, user } = response.data
-
-    // Store user & token in Pinia + localStorage
-    auth.login(user, token)
-
-    // Optional success alert
-    alert(response.data.message || `Welcome back, ${user.name}!`)
-
-    // Redirect to dashboard or home
-    router.push('/')
-  } catch (err) {
-    const data = err.response?.data
-    if (Array.isArray(data?.errors)) {
-      errors.value = data.errors.map((e) => e.message)
-    } else if (data?.message) {
-      errors.value = [data.message]
-    } else {
-      errors.value = ['Something went wrong. Please try again.']
-    }
-  }
-}
-</script>

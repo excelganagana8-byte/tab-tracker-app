@@ -1,4 +1,36 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+<script setup>
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
+const router = useRouter()
+const route = useRoute()
+const isMobileMenuOpen = ref(false)
+
+// Computed username
+const username = computed(() => auth.user?.name)
+
+// Logout
+const handleLogout = () => {
+  auth.logout()
+  router.push('/login')
+  isMobileMenuOpen.value = false
+}
+
+// Nav links
+const navLinks = [
+  { name: 'Dashboard', path: '/' },
+  { name: 'Library', path: '/songs' },
+  { name: 'bookmarks', path: '/bookmarks' },
+  { name: 'Stats', path: '/stats' },
+]
+
+// Highlight active route
+const isActive = (path) => (path === '/' ? route.path === '/' : route.path.startsWith(path))
+</script>
+
 <template>
   <nav class="border-b border-white/10">
     <div class="container mx-auto px-3 xs:px-4 sm:px-6 py-3 sm:py-4">
@@ -164,35 +196,3 @@
     </div>
   </nav>
 </template>
-
-<script setup>
-import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-
-const auth = useAuthStore()
-const router = useRouter()
-const route = useRoute()
-const isMobileMenuOpen = ref(false)
-
-// Computed username
-const username = computed(() => auth.user?.name)
-
-// Logout
-const handleLogout = () => {
-  auth.logout()
-  router.push('/login')
-  isMobileMenuOpen.value = false
-}
-
-// Nav links
-const navLinks = [
-  { name: 'Dashboard', path: '/' },
-  { name: 'Library', path: '/songs' },
-  { name: 'Playlists', path: '/playlists' },
-  { name: 'Stats', path: '/stats' },
-]
-
-// Highlight active route
-const isActive = (path) => (path === '/' ? route.path === '/' : route.path.startsWith(path))
-</script>
