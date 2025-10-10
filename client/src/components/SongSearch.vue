@@ -1,21 +1,22 @@
 <template>
-  <div class="flex justify-center">
-    <div class="relative w-full max-w-md">
+  <div class="flex justify-center px-4 sm:px-6">
+    <div class="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
       <input
         type="text"
         placeholder="Search by song title or artist..."
-        class="p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="p-3 md:p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent text-base placeholder-gray-500 pr-10 md:pr-12"
         v-model="search"
+        @keyup.enter="handleSearch"
       />
-      <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-        <svg
-          v-if="search"
-          @click="clearSearch"
-          class="w-5 h-5 cursor-pointer hover:text-gray-600"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+
+      <!-- Clear button -->
+      <button
+        v-if="search"
+        @click="clearSearch"
+        class="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors text-gray-400"
+        type="button"
+      >
+        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -23,7 +24,14 @@
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-        <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      </button>
+
+      <!-- Search icon -->
+      <div
+        v-else
+        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+      >
+        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"

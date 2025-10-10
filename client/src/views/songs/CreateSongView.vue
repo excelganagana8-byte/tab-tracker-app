@@ -1,7 +1,5 @@
 <template>
   <BackgroundWrapper>
-    <MainHeader />
-
     <PageHeader title="Add New Song" subtitle="Share your music with the world" />
 
     <FormContainer>
@@ -116,7 +114,6 @@
 <script setup>
 import { ref } from 'vue'
 import SongService from '@/services/SongService'
-import MainHeader from '@/components/MainHeader.vue'
 import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import FormContainer from '@/components/FormContainer.vue'

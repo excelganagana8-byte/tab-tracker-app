@@ -216,10 +216,14 @@ import Header from '@/components/Header.vue'
 import BrowseButton from '@/components/BrowseButton.vue'
 import { ref } from 'vue'
 import AuthenticationService from '@/services/AuthenticationService'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const email = ref('')
 const password = ref('')
 const errors = ref([])
+const router = useRouter()
+const auth = useAuthStore()
 
 const login = async () => {
   errors.value = []
@@ -230,7 +234,17 @@ const login = async () => {
       password: password.value,
     })
 
-    alert(response.data.message || 'Login Successful')
+    // Get token and user directly from backend response
+    const { token, user } = response.data
+
+    // Store user & token in Pinia + localStorage
+    auth.login(user, token)
+
+    // Optional success alert
+    alert(response.data.message || `Welcome back, ${user.name}!`)
+
+    // Redirect to dashboard or home
+    router.push('/')
   } catch (err) {
     const data = err.response?.data
     if (Array.isArray(data?.errors)) {

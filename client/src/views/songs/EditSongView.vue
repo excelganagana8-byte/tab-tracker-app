@@ -1,7 +1,5 @@
 <template>
   <BackgroundWrapper>
-    <MainHeader />
-
     <PageHeader title="Edit Song" subtitle="Make new changes to your song" />
 
     <FormContainer>
@@ -115,7 +113,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import SongService from '@/services/SongService'
-import MainHeader from '@/components/MainHeader.vue'
 import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import FormContainer from '@/components/FormContainer.vue'

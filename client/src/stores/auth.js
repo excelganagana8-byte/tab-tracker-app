@@ -1,25 +1,50 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
-export const useAuthStore = defineStore('auth', () => {
-  const token = ref(null)
-  const user = ref(null)
-  const isLoggedIn = ref(false)
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    token: localStorage.getItem('token') || null,
+    user: (() => {
+      try {
+        const userString = localStorage.getItem('user')
+        return userString ? JSON.parse(userString) : null
+      } catch {
+        // invalid JSON in localStorage
+        localStorage.removeItem('user')
+        return null
+      }
+    })(),
+  }),
 
-  function setToken(newToken) {
-    token.value = newToken
-    isLoggedIn.value = !!newToken
-  }
+  getters: {
+    isLoggedIn: (state) => !!state.token,
+  },
 
-  function setUser(newUser) {
-    user.value = newUser
-  }
+  actions: {
+    login(user, token) {
+      this.user = user
+      this.token = token
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+    },
 
-  function logout() {
-    token.value = null
-    user.value = null
-    isLoggedIn.value = false
-  }
+    logout() {
+      this.user = null
+      this.token = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    },
 
-  return { token, user, isLoggedIn, setToken, setUser, logout }
+    loadUser() {
+      const token = localStorage.getItem('token')
+      const userString = localStorage.getItem('user')
+      if (token && userString) {
+        try {
+          this.token = token
+          this.user = JSON.parse(userString)
+        } catch {
+          this.logout()
+        }
+      }
+    },
+  },
 })

@@ -19,29 +19,36 @@ export const login = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Compare provided password with hashed password in DB
     const isMatched = await bcrypt.compare(password, existingUser.password);
     if (!isMatched) {
-      return res.status(400).json({ message: "Wrong Password" });
+      return res.status(400).json({ message: "Wrong password" });
     }
 
-    // ✅ Generate JWT token
+    // ✅ Generate JWT
     const token = jwt.sign(
       { userId: existingUser._id, email: existingUser.email },
       process.env.JWT_SECRET || "fallback_secret",
-      { expiresIn: "1h" } // token expires in 1 hour
+      { expiresIn: "1h" }
     );
 
-    // Success response
+    // ✅ Create a user object to send back
+    const user = {
+      id: existingUser._id,
+      email: existingUser.email,
+      name: existingUser.email.split("@")[0], // derive a display name
+    };
+
+    // ✅ Send both token and user
     res.status(200).json({
-      message: `Welcome back ${existingUser.email}!`,
-      token, // send token back to frontend
+      message: `Welcome back, ${user.name}!`,
+      token,
+      user,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };

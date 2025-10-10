@@ -3,7 +3,6 @@
     class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col transition-colors"
   >
     <!-- <MainHeader /> -->
-    <Nav />
 
     <div class="p-8">
       <div class="max-w-2xl mx-auto flex justify-between items-center">
@@ -170,7 +169,6 @@
 </template>
 
 <script setup>
-import Nav from '@/components/Nav.vue'
 import SongService from '@/services/SongService'
 import SongSearch from '@/components/SongSearch.vue'
 import { onMounted, ref, watch } from 'vue'

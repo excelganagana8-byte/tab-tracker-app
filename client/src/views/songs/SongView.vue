@@ -1,7 +1,5 @@
 <template>
   <BackgroundWrapper>
-    <MainHeader />
-
     <div class="p-4 md:p-8">
       <div class="max-w-7xl mx-auto">
         <!-- Main Content Grid -->
@@ -361,7 +359,6 @@
 <script setup>
 import SongService from '@/services/SongService'
 import BookmarksServices from '@/services/BookmarksServices'
-import MainHeader from '@/components/MainHeader.vue'
 import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import YouTubeEmbed from '@/components/YouTubeEmbed.vue'
 import { onMounted, ref } from 'vue'
