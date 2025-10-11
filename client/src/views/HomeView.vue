@@ -12,30 +12,130 @@
             Tab Tracker
           </span>
         </h1>
-        <p
-          class="text-base xs:text-lg sm:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 flex items-center justify-center gap-1 xs:gap-2 flex-wrap"
-        >
-          <span class="text-lg xs:text-xl sm:text-2xl">🎵</span>
-          <span
-            class="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent font-semibold"
+
+        <!-- Dynamic Subtitle based on login state -->
+        <div v-if="authStore.isLoggedIn" class="space-y-4 xs:space-y-6">
+          <p class="text-base xs:text-lg sm:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8">
+            Welcome back! Ready to continue your musical journey? 🎸
+          </p>
+          <div
+            class="bg-white/5 backdrop-blur-lg rounded-2xl p-4 xs:p-6 border border-purple-500/30 max-w-md mx-auto"
           >
-            at its best
-          </span>
-          <span class="text-lg xs:text-xl sm:text-2xl">🎶</span>
-        </p>
+            <p class="text-purple-200 text-sm xs:text-base mb-3">
+              <span class="font-semibold text-white">Quick Stats:</span><br />
+              <span class="text-gray-300">Keep track of your progress and discover new tabs!</span>
+            </p>
+          </div>
+        </div>
+
+        <div v-else class="space-y-4 xs:space-y-6">
+          <!-- Main User-Friendly Message -->
+          <div class="max-w-2xl mx-auto">
+            <p class="text-base xs:text-lg sm:text-xl text-gray-300 mb-3 sm:mb-4">
+              Master your favorite songs with the ultimate guitar tab companion 🎵
+            </p>
+
+            <!-- Benefits Highlight -->
+            <div
+              class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-lg rounded-2xl p-4 xs:p-6 border border-purple-500/20 mb-4 sm:mb-6"
+            >
+              <p class="text-white text-sm xs:text-base font-semibold mb-2">
+                Start your musical journey in seconds:
+              </p>
+              <div class="grid grid-cols-1 xs:grid-cols-2 gap-2 text-xs xs:text-sm text-gray-300">
+                <div class="flex items-center gap-2">
+                  <span class="text-green-400 text-lg">✓</span>
+                  <span>Access 10,000+ tabs</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-green-400 text-lg">✓</span>
+                  <span>Track your progress</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-green-400 text-lg">✓</span>
+                  <span>Sync across devices</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-green-400 text-lg">✓</span>
+                  <span>Completely free</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
         <div
           class="flex flex-col xs:flex-row justify-center gap-2 xs:gap-3 sm:gap-4 mt-4 sm:mt-6 md:mt-8"
         >
           <button
-            class="px-4 xs:px-6 sm:px-8 py-2 xs:py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white font-semibold hover:shadow-2xl hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1 text-xs xs:text-sm sm:text-base"
+            v-if="authStore.isLoggedIn"
+            @click="goToAddTab"
+            class="px-4 xs:px-6 sm:px-8 py-2 xs:py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white font-semibold hover:shadow-2xl hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1 text-xs xs:text-sm sm:text-base flex items-center justify-center gap-2"
           >
-            Get Started
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add New Tab
           </button>
+
           <button
+            v-else
+            @click="goToSignUp"
+            class="px-4 xs:px-6 sm:px-8 py-2 xs:py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white font-semibold hover:shadow-2xl hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1 text-xs xs:text-sm sm:text-base flex items-center justify-center gap-2 group"
+          >
+            <svg
+              class="w-4 h-4 group-hover:scale-110 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+            Start Playing Now - It's Free!
+          </button>
+
+          <button
+            v-if="!authStore.isLoggedIn"
+            @click="goToLogin"
             class="px-4 xs:px-6 sm:px-8 py-2 xs:py-3 border border-purple-500/50 rounded-xl text-purple-300 font-semibold hover:bg-purple-500/10 transition-all text-xs xs:text-sm sm:text-base"
           >
+            I Have an Account
+          </button>
+
+          <button
+            v-else
+            @click="goToLearnMore"
+            class="px-4 xs:px-6 sm:px-8 py-2 xs:py-3 border border-purple-500/50 rounded-xl text-purple-300 font-semibold hover:bg-purple-500/10 transition-all text-xs xs:text-sm sm:text-base flex items-center justify-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
             Learn More
           </button>
+        </div>
+
+        <!-- Additional info for non-logged in users -->
+        <div v-if="!authStore.isLoggedIn" class="mt-4 sm:mt-6">
+          <p class="text-gray-400 text-xs xs:text-sm">
+            Join <span class="text-purple-300 font-semibold">5,000+ guitarists</span> already
+            improving their skills
+          </p>
         </div>
       </div>
 
@@ -128,89 +228,40 @@
         </div>
       </div>
 
-      <!-- Recent Activity -->
-      <div
-        class="bg-white/5 backdrop-blur-lg rounded-2xl p-3 xs:p-4 sm:p-6 md:p-8 border border-white/10"
-      >
-        <h2 class="text-lg xs:text-xl sm:text-2xl font-bold text-white mb-3 xs:mb-4 sm:mb-6">
-          Recent Activity
-        </h2>
-        <div class="space-y-2 xs:space-y-3 sm:space-y-4">
-          <div
-            class="flex flex-col xs:flex-row xs:items-center justify-between p-2 xs:p-3 sm:p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-1 xs:gap-2 sm:gap-0"
-          >
-            <div class="flex items-center space-x-2 xs:space-x-3 sm:space-x-4">
-              <div
-                class="w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0"
-              >
-                <svg
-                  class="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                  ></path>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h4 class="text-white font-medium text-sm xs:text-base truncate">
-                  Sweet Child O' Mine
-                </h4>
-                <p class="text-gray-400 text-xs truncate">Guns N' Roses • 2 hours ago</p>
-              </div>
-            </div>
-            <div
-              class="text-purple-300 font-semibold text-xs xs:text-sm sm:text-base xs:ml-2 sm:ml-4 mt-1 xs:mt-0"
-            >
-              87%
-            </div>
-          </div>
-
-          <div
-            class="flex flex-col xs:flex-row xs:items-center justify-between p-2 xs:p-3 sm:p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-1 xs:gap-2 sm:gap-0"
-          >
-            <div class="flex items-center space-x-2 xs:space-x-3 sm:space-x-4">
-              <div
-                class="w-6 h-6 xs:w-8 xs:h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0"
-              >
-                <svg
-                  class="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                  ></path>
-                </svg>
-              </div>
-              <div class="min-w-0 flex-1">
-                <h4 class="text-white font-medium text-sm xs:text-base truncate">Wonderwall</h4>
-                <p class="text-gray-400 text-xs truncate">Oasis • 1 day ago</p>
-              </div>
-            </div>
-            <div
-              class="text-purple-300 font-semibold text-xs xs:text-sm sm:text-base xs:ml-2 sm:ml-4 mt-1 xs:mt-0"
-            >
-              92%
-            </div>
-          </div>
-        </div>
-      </div>
+      <SongHistory />
     </main>
   </div>
 </template>
 
 <script setup>
-// import Nav from '@/components/Nav.vue'
+import SongHistory from '@/components/SongHistory.vue'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+function goToSignUp() {
+  router.push('/register')
+}
+
+function goToLogin() {
+  router.push('/login')
+}
+
+function goToAddTab() {
+  router.push('/song/create')
+}
+
+function goToLearnMore() {
+  router.push('/learnmore')
+  // You can route to a features page, documentation, or keep it as is
+  // For now, let's just scroll to features
+  const featuresSection = document.querySelector('.grid.grid-cols-1')
+  if (featuresSection) {
+    featuresSection.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <style scoped>

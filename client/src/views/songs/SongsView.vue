@@ -1,3 +1,51 @@
+<script setup>
+import SongService from '@/services/SongService'
+import SongSearch from '@/components/SongSearch.vue'
+import { onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+const songs = ref([])
+const searchTerm = ref('')
+const router = useRouter()
+
+// Fetch songs function that can be reused
+const fetchSongs = async (search = '') => {
+  try {
+    const response = await SongService.index({ search })
+    songs.value = response.data
+  } catch (error) {
+    console.error('Error fetching songs:', error)
+  }
+}
+
+// Initial load
+onMounted(() => {
+  fetchSongs(searchTerm.value)
+})
+
+// Watch search term and fetch songs
+watch(searchTerm, (newSearch) => {
+  fetchSongs(newSearch)
+})
+
+// Use named routes instead of string replacement (more reliable)
+function go() {
+  router.push({ name: 'createSong' }) // Use the route name
+}
+
+function view(songId) {
+  // Option 1: Use named route (Recommended)
+  router.push({ name: 'viewSong', params: { id: songId } })
+
+  // Option 2: Use path (Alternative)
+  // router.push(`/songs/${songId}`)
+}
+
+function clearSearch() {
+  searchTerm.value = ''
+}
+</script>
+
 <template>
   <div
     class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col transition-colors"
@@ -5,7 +53,10 @@
     <!-- <MainHeader /> -->
 
     <div class="p-8">
-      <div class="max-w-2xl mx-auto flex justify-between items-center">
+      <div
+        class="max-w-2xl mx-auto flex items-center"
+        :class="songs.length ? 'justify-between' : 'justify-center'"
+      >
         <div class="text-center">
           <h2
             class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
@@ -20,6 +71,7 @@
         </div>
 
         <button
+          v-if="songs.length"
           @click="go"
           class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
         >
@@ -167,51 +219,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import SongService from '@/services/SongService'
-import SongSearch from '@/components/SongSearch.vue'
-import { onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-
-const songs = ref([])
-const searchTerm = ref('')
-const router = useRouter()
-
-// Fetch songs function that can be reused
-const fetchSongs = async (search = '') => {
-  try {
-    const response = await SongService.index({ search })
-    songs.value = response.data
-  } catch (error) {
-    console.error('Error fetching songs:', error)
-  }
-}
-
-// Initial load
-onMounted(() => {
-  fetchSongs(searchTerm.value)
-})
-
-// Watch search term and fetch songs
-watch(searchTerm, (newSearch) => {
-  fetchSongs(newSearch)
-})
-
-// Use named routes instead of string replacement (more reliable)
-function go() {
-  router.push({ name: 'createSong' }) // Use the route name
-}
-
-function view(songId) {
-  // Option 1: Use named route (Recommended)
-  router.push({ name: 'viewSong', params: { id: songId } })
-
-  // Option 2: Use path (Alternative)
-  // router.push(`/songs/${songId}`)
-}
-
-function clearSearch() {
-  searchTerm.value = ''
-}
-</script>

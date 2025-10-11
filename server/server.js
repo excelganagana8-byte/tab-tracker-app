@@ -7,6 +7,7 @@ import connectDB from "./config/database.js";
 import authRoutes from "./routes/auth.js";
 import songRoutes from "./routes/songs.js";
 import bookmarkRoutes from "./routes/bookmark.js";
+import historyRoutes from "./routes/history.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ connectDB();
 app.use("/api", authRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/history", historyRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

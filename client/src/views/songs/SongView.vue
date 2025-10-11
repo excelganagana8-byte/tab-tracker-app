@@ -1,6 +1,7 @@
 <script setup>
 import SongService from '@/services/SongService'
 import BookmarksServices from '@/services/BookmarksServices'
+import SongHistoryService from '@/services/SongHistoryService'
 import BackgroundWrapper from '@/components/BackgroundWrapper.vue'
 import YouTubeEmbed from '@/components/YouTubeEmbed.vue'
 import { useAuthStore } from '@/stores/auth'
@@ -57,11 +58,26 @@ async function removeBookmark() {
     console.error('Error removing bookmark:', error)
   }
 }
+async function addToHistory(song) {
+  try {
+    if (!auth.isLoggedIn) return
+    const payload = {
+      song: song._id,
+      user: auth.user._id || auth.user.id,
+    }
+    console.log('Adding to history:', payload)
+
+    await SongHistoryService.create(payload)
+    console.log('✅ song added to history')
+  } catch (err) {
+    console.error('❌ Failed to add song to history', err)
+  }
+}
 
 onMounted(async () => {
   try {
     const songId = route.params.id
-    const userId = auth.user?.id //'68e2d5c7615e3e58ef5a8bfe' /👈 Replace later with real logged-in user
+    const userId = auth.user?.id
 
     if (!songId) {
       console.error('❌ No song ID found in route parameters')
@@ -70,18 +86,23 @@ onMounted(async () => {
 
     console.log('🎵 Fetching song with ID:', songId)
 
-    // 1️⃣ Fetch song info
-    const songResponse = await SongService.show(songId)
-    song.value = songResponse.data
-    console.log('✅ Fetched song:', songResponse.data)
+    // 1️⃣ Fetch song info once
+    const { data } = await SongService.show(songId)
+    song.value = data
+    console.log('✅ Fetched song:', data)
 
-    // 2️⃣ Fetch user bookmarks
-    const { data: bookmarks } = await BookmarksServices.index(userId)
-    console.log('📚 User bookmarks:', bookmarks)
+    // 2️⃣ Add to history (if logged in)
+    await addToHistory(data)
 
-    // 3️⃣ Check if this song is bookmarked
-    isBookmarked.value = bookmarks.some((b) => b.song._id === songId)
-    console.log('🔖 isBookmarked:', isBookmarked.value)
+    // 3️⃣ Fetch user bookmarks
+    if (auth.isLoggedIn) {
+      const { data: bookmarks } = await BookmarksServices.index(userId)
+      console.log('📚 User bookmarks:', bookmarks)
+
+      // 4️⃣ Check if this song is bookmarked
+      isBookmarked.value = bookmarks.some((b) => b.song._id === songId)
+      console.log('🔖 isBookmarked:', isBookmarked.value)
+    }
   } catch (error) {
     console.error('🔥 Error fetching song or bookmarks:', error)
   }
