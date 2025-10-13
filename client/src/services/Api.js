@@ -4,6 +4,7 @@ import axios from 'axios'
 export default () => {
   const instance = axios.create({
     baseURL: 'http://localhost:3000/api',
+    // baseURL: 'https://xiomara-intertentacular-sunny.ngrok-free.dev/api',
   })
 
   // ✅ Automatically attach JWT from localStorage for every request

@@ -18,6 +18,24 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
+// const allowedOrigins = [
+//   // "https://xiomara-intertentacular-sunny.ngrok-free.dev",
+//   "https://sightly-christian-unathletically.ngrok-free.dev",
+//   // Add other allowed origins here
+// ];
+
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (allowedOrigins.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+
+// app.use(cors(corsOptions));
+
 connectDB();
 
 // Use routes
