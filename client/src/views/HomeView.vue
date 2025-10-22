@@ -264,6 +264,4 @@ function goToLearnMore() {
 }
 </script>
 
-<style scoped>
-/* Custom styles can be added here if needed */
-</style>
+<style scoped></style>

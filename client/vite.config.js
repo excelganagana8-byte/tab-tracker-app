@@ -36,7 +36,7 @@ export default defineConfig({
     allowedHosts: ['.ngrok-free.dev'], // allow all ngrok free domains
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // your Node backend
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
