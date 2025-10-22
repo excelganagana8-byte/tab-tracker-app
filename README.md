@@ -9,7 +9,7 @@
 ## 🚀 Overview
 
 Tab Tracker is a music app that allows users to explore, track, and play songs.  
-It’s mainly a **practice project** to strengthen my skills in **Vue.js**, **Pinia**, and **frontend development workflows** using **Vite**.
+It’s mainly a **practice project** to show how frontend **Vue.js**, and **backend (node,js)** interacts
 
 ---
 
