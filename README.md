@@ -1,6 +1,6 @@
 # 🎧 Tab Tracker Music App
 
-> A simple music application built with **Vue 3** and **Vite**, designed for learning, experimentation, and fun!
+> A simple music application built with **Vue 3** and **node.js/express.js**, designed for learning, experimentation, and fun!
 
 > ⚠️ **Note:** The name _"Tab Tracker"_ was something I came across online. If you’ve seen it elsewhere, it’s nothing personal or official — just using it as a learning project title. 😊
 
@@ -19,7 +19,7 @@ It’s mainly a **practice project** to strengthen my skills in **Vue.js**, **Pi
 - **Pinia** – State management
 - **Vite** – Fast build and dev server
 - **Tailwind CSS** – Styling
-- **Node.js / Express (Backend)** – Optional API layer
+- **Node.js / Express (Backend)** – REST API
 - **Axios** – HTTP requests
 - **MongoDb** - For a NOSQL database
 
